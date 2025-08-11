@@ -1,14 +1,13 @@
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.interactions.Actions;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class Homework19 extends BaseTest {
-
     @Test
     public void deletePlaylist() throws InterruptedException {
         String expectedPlaylistDeleteMessage ="Deleted playlist \"Test Pro Playlist.\"";
+
 
         //Login
         openPlaylist();
@@ -18,6 +17,7 @@ public class Homework19 extends BaseTest {
         Assert.assertEquals(getDeletedPlayListMsg(), expectedPlaylistDeleteMessage);
     }
 
+
     //Verify success message appears
     public String getDeletedPlayListMsg() throws InterruptedException {
         Thread.sleep(3000);
@@ -25,11 +25,13 @@ public class Homework19 extends BaseTest {
         return notificationMsg.getText();
     }
 
+
     //Click delete button
     public void clickDeletePlaylistBtn() throws InterruptedException {
         WebElement deletePlaylist = driver.findElement(By.cssSelector("button[title='Delete this playlist']"));
         deletePlaylist.click();
         Thread.sleep(2000);
+
 
     }
     //Click on "Test Pro Playlist"
