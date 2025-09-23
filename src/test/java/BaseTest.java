@@ -25,7 +25,7 @@ public class BaseTest {
     private static final ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();
     private WebDriverWait wait;
     private Actions actions;
-    private String url;
+    public String url;
 
     @BeforeSuite
     static void setupClass() {
