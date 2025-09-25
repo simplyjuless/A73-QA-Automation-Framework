@@ -5,7 +5,7 @@
     <parameter name="BaseURL" value="https://qa.koel.app/">
     <test name="Homework25 Test" preserve-order="false">
         <classes>
-            <class name="BaseTest"/>
+            <class name="Tests.BaseTest"/>
 <<<<<<< Updated upstream
 =======
             <class name="Homeworkk21"/>
