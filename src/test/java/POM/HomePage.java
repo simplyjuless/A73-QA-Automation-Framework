@@ -1,5 +1,6 @@
 package POM;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -37,5 +38,10 @@ public class HomePage extends Basepage {
     //Success message getter
     public String getRenamePlaylistSuccessMsg(){
         return renamePlaylistSuccessMsg.getText();
+    }
+
+    public boolean isAvatarDisplayed() {
+        By avatar = null;
+        return driver.findElement(null).isDisplayed();
     }
 }

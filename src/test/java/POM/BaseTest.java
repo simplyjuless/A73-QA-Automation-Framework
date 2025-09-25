@@ -1,3 +1,5 @@
+package POM;
+
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,20 +19,18 @@ import org.testng.annotations.Parameters;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
-import java.rmi.Remote;
 import java.time.Duration;
 import java.util.HashMap;
 
 public class BaseTest {
-    public static WebDriver driver = null;
+    protected static WebDriver driver = null;
     public static Actions actions = null;
-    public static WebDriver wait = null;
-    public static String = null;
+    WebDriverWait wait;
 
     private static final ThreadLocal<WebDriver> threadDriver = new ThreadLocal<>();
 
 
-    private String url;
+    protected String url;
 
     @BeforeSuite
     static void setupClass() {
@@ -42,7 +42,8 @@ public class BaseTest {
     @Parameters({"BaseURL"})
     public void setUpBrowser(String BaseURL) throws MalformedURLException {
         //this is the initiation for gradle command
-        threadDriver.set(pickBrowser(System.getProperty("browser")));
+        driver = pickBrowser(System.getProperty("browser"));
+        threadDriver.set(driver);
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
 
@@ -50,7 +51,7 @@ public class BaseTest {
         getDriver().manage().window().maximize();
         getDriver().manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 
-        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
         actions = new Actions(driver);
 
         url = BaseURL;
@@ -85,7 +86,7 @@ public class BaseTest {
         return threadDriver.get();
     }
 
-    public WebDriver lambdatest(){
+    public WebDriver lambdatest() throws MalformedURLException {
         String hubURL="https://hub.lambdatest.com/wb/hub";
 
         ChromeOptions browserOptions = new ChromeOptions();
@@ -99,7 +100,12 @@ public class BaseTest {
         ltOptions.put("plugin", "java-java");
         browserOptions.setCapability("LT:Options", ltOptions);
 
-        return new RemoteWebDriver(new URL(hubURL),browserOptions);
+        try {
+            return new RemoteWebDriver(new URL(hubURL), browserOptions);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public WebDriver pickBrowser(String browser) throws MalformedURLException {

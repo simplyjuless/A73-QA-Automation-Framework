@@ -1,11 +1,18 @@
 package POM;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public class LoginPage extends Basepage{
+
+    private By emailInput = By.id("email");
+    private By passwordInput = By.id("password");
+    private By submitButton = By.id("submit");
+
+
     //Constructor initializes POM elements
     public LoginPage(WebDriver givenDriver) {
         super(givenDriver); //navigates to BasePage
@@ -21,14 +28,16 @@ public class LoginPage extends Basepage{
     private WebElement submitBtn;
 
     //Page Methods
-    public void provideEmail(String email){
+    public LoginPage provideEmail(String email) {
         emailField.clear();
         emailField.sendKeys(email);
+        return this;
     }
 
-    public void providePassword(String password) {
+    public LoginPage providePassword(String password) {
         emailField.clear();
         passwordField.sendKeys(password);
+        return this;
     }
 
     public void submitBtn (){
@@ -42,4 +51,7 @@ public class LoginPage extends Basepage{
         return this;
     }
 
+    public void clickSubmit() {
+        clickSubmit();
+    }
 }
