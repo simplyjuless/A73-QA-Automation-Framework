@@ -1,3 +1,4 @@
+import Tests.BaseTest;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -41,16 +42,12 @@ public class LoginTests extends BaseTest {
             //Assert.assertEquals(driver.getCurrentUrl(), url);
             driver.quit();
         }
-    }
-
-
 
     private void clickOnLoginBtn () {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//button[@type='submit']")));
         loginButton.click();
     }
-
 
     private void providePassword (String password){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -71,6 +68,6 @@ public class LoginTests extends BaseTest {
         driver.get(url);
     }
 
-
     public void main() {
     }
+}
