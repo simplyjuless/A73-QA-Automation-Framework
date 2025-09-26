@@ -1,5 +1,3 @@
-package Tests;
-
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -14,7 +12,6 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
-import org.testng.annotations.Parameters;
 
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -35,7 +32,7 @@ public class BaseTest {
     }
 
     @BeforeMethod
-    @Parameters({"BaseURL"})
+   // @Parameters({"BaseURL"})
     public void setUpBrowser(String BaseURL) throws MalformedURLException {
         //this is the initiation for gradle command
         threadDriver.set(pickBrowser(System.getProperty("browser")));

@@ -1,5 +1,7 @@
-package POM;
+package oldTests;
 
+import POM.Homepage;
+import POM.Loginpage;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -14,8 +16,8 @@ public class Homework23 extends BaseTest {
         String expectedRenameMessage = "Updated playlist \"" + "Gym" + "\"";
 
         // Initialize POM pages
-        Loginpage loginPage = new Loginpage(driver);
-        Homepage homepage = new Homepage(driver);
+        Loginpage loginPage = new Loginpage(BaseTest.driver);
+        Homepage homepage = new Homepage(BaseTest.driver);
 
         //Login
         loginPage.login("julia.munoz@testpro.io", "Ltdan25!");
