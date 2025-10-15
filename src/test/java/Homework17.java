@@ -71,7 +71,7 @@ public class Homework17 extends BaseTest {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
         WebElement viewAllBtn = wait.until(ExpectedConditions.elementToBeClickable(
                 By.xpath("//button[@data-test='view-all-songs-btn']")));
-       viewAllBtn.click();
+        viewAllBtn.click();
 
     }
 
