@@ -5,8 +5,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.FluentWait;
-import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -15,67 +13,62 @@ import org.testng.annotations.BeforeSuite;
 import java.time.Duration;
 
 public class BaseTest {
-    public String url = "https://qa.koel.app/";
+
     public WebDriver driver;
-    WebDriverWait wait;
-    Wait<WebDriver> fluentWait;
+    public String baseURL = "https://qa.koel.app/";
 
     @BeforeSuite
-    static void setupClass() {
+    public void setupClass() {
         WebDriverManager.chromedriver().setup();
     }
+
     @BeforeMethod
-    public void LaunchBrowser() {
+    public void launchBrowser() {
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
 
         driver = new ChromeDriver(options);
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
-        driver.get(url);
 
-        fluentWait = new FluentWait<>(driver)
-                .withTimeout(Duration.ofSeconds(5))
-                .pollingEvery(Duration.ofSeconds(1))
-                .ignoring(Exception.class);
+        // Navigate to login page
+        driver.get(baseURL);
 
-        // Login with hardcoded credentials for now
-        provideEmail("julia.munoz@testpro.io");
-        providePassword("Ltdan25!");
-        clickOnLoginBtn();
-
-    }
-    public String getErrorMessage() {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-            WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(
-                    By.cssSelector(".error"))); // <-- adjust selector to your app
-            return error.getText();
-        } catch (Exception e) {
-            return "";
-        }
-    }
-        void clickOnLoginBtn() {
-        WebElement loginButton = driver.findElement(By.xpath("//button[@type='submit']"));
-        loginButton.click();
-    }
-
-    void providePassword(String password) {
-        WebElement passwordField = driver.findElement(By.xpath("//input[@type='password']"));
-        passwordField.clear();
-        passwordField.sendKeys(password);
-    }
-
-    void provideEmail(String email) {
+        // Login
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
-        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated
-                        (By.xpath("//input[@type='email']")));
+
+        // Email
+        WebElement emailField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='email']")));
         emailField.clear();
-        emailField.sendKeys(email);
+        emailField.sendKeys("julia.munoz@testpro.io");
+
+        // Password
+        WebElement passwordField = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("input[type='password']")));
+        passwordField.clear();
+        passwordField.sendKeys("Ltdan25!");
+
+        // Click login
+        WebElement loginButton = wait.until(ExpectedConditions.elementToBeClickable(By.cssSelector("button[type='submit']")));
+        loginButton.click();
+
+        // Wait for homepage to load
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("div.heading-wrapper h1")));
     }
 
     @AfterMethod
-    public void tearDown() {
-        driver.quit();
+    public void closeBrowser() {
+        if (driver != null) {
+            driver.quit();
+        }
+    }
+
+    // Helper to get login error messages if needed
+    public String getErrorMessage() {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+            WebElement error = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".error")));
+            return error.getText().trim();
+        } catch (Exception e) {
+            return "";
+        }
     }
 }

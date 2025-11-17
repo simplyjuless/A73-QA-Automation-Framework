@@ -2,40 +2,27 @@ package POM;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 
 public class HomePage extends BasePage {
 
-    public HomePage(WebDriver givenDriver) {
-        super(givenDriver);
+    public HomePage(WebDriver driver) {
+        super(driver);
     }
 
-    //Locators
-    private static By avatarIcon = By.cssSelector("img.avatar");
-    private By favoritesTab = By.cssSelector("a[href='#/favorites']");
-    private By logoutBtn = By.cssSelector(".logout");
+    // Locators
+    private final By welcomeMessage = By.xpath("//h1[contains(text(), 'student')]");
+    private final By searchField = By.cssSelector("#searchForm input[type='search']");
 
-    //Actions
-    public static boolean isDisplayed() {
-        //check if avatar is visible
-        return findElement(avatarIcon).isDisplayed();
+    // Actions
+    public boolean isWelcomeMessageDisplayed() {
+        return isDisplayed(welcomeMessage, 10);
     }
 
-    public void navigateTo(String pageName) {
-        if (pageName.toLowerCase().equals("favorites")) {
-            findElement(favoritesTab).click();
-            //can add more pages here:
-            // case "albums""findElement(albumsTabs).click(); break;
-        } else {
-            throw new IllegalArgumentException("Unknown page:" + pageName);
-        }
+    public String getWelcomeMessageText() {
+        return getText(welcomeMessage, 10);
     }
-    public boolean isFavoritesPageDisplayed() {
-        By favoritesHeader = By.cssSelector("section.favorites, h1.page-title");
-        return findElement(favoritesHeader).isDisplayed();
-    }
-    public void logout() {
-        findElement(avatarIcon).click(); //opens dropdown menu
-        findElement(logoutBtn).click(); //logs user out
+
+    public boolean isSearchFieldVisible() {
+        return isDisplayed(searchField, 10);
     }
 }

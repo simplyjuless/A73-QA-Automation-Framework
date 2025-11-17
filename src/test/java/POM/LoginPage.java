@@ -9,59 +9,45 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class LoginPage extends BasePage {
-    //Constructor
-    public LoginPage(WebDriver givenDriver) {
-        super(givenDriver); //navigates to BasePage
+
+    private final By emailField = By.xpath("//input[@type='email']");
+    private final By passwordField = By.xpath("//input[@type='password']");
+    private final By submitBtn = By.xpath("//button[@type='submit']");
+    private final By welcomeHeader = By.xpath("//h1[contains(text(), 'student')]");
+
+    public LoginPage(WebDriver driver) {
+        super(driver); //navigates to BasePage
     }
 
-    //Locators
-    By emailField = By.cssSelector("form#loginForm input[type='email']");
-    By passwordField = By.cssSelector("input[type='password']");
-    By submitBtn = By.cssSelector("button[type='submit']");
-    By errorMsg = By.cssSelector(".error");
+    private WebElement waitForClickable(By locator, int seconds) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(seconds));
+        return wait.until(ExpectedConditions.elementToBeClickable(locator));
+    }
 
-    //Page Methods
-    public void provideEmail(String email) {
-        WebElement emailInput = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(emailField));
+    //Page Methods//Actions
+    public Koel_Homepage login(String email, String password) {
+        //wait for login form to be visible
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(emailField));
+
+        //enter email
+        WebElement emailInput = waitForClickable(emailField, 15);
         emailInput.clear();
         emailInput.sendKeys(email);
-    }
 
-    public void providePassword(String password) {
-        WebElement passwordInput = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(passwordField));
+        //enter password
+        WebElement passwordInput = waitForClickable(passwordField, 15);
         passwordInput.clear();
         passwordInput.sendKeys(password);
-    }
 
-    public void submitBtn() {
-        WebElement loginButton = new WebDriverWait(driver, Duration.ofSeconds(10))
-                .until(ExpectedConditions.elementToBeClickable(submitBtn));
-        loginButton.click();
-    }
+        //click login
+        WebElement btn = waitForClickable(submitBtn, 15);
+        btn.click();
 
-    public HomePage login(String email, String password) {
-        provideEmail(email);
-        providePassword(password);
-        submitBtn();
-        return new HomePage(driver);
-    }
+        wait.until(ExpectedConditions.visibilityOfElementLocated(welcomeHeader));
 
-    public String getErrorMessage() {
-        try {
-            WebElement error = new WebDriverWait(driver, Duration.ofSeconds(5))
-            .until(ExpectedConditions.visibilityOfElementLocated(errorMsg));
-            return error.getText().trim();
-        } catch (Exception e) {
-            return "";
-        }
-    }
-
-
-    public boolean isLoginButtonDisplayed() {
-        WebElement loginBtn = findElement(submitBtn);
-        return !loginBtn.isEnabled();
+        //return POM.Koel_Homepage object
+        return new Koel_Homepage(driver);
     }
 
 }
